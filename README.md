@@ -4,6 +4,8 @@ A Flask web app that plots functions, animates their derivatives and
 integrals, and computes Fourier transforms — built with Flask, SymPy,
 NumPy, and Plotly.js.
 
+**Preview:** https://math-visualizer-gdzu.onrender.com/
+
 ## Features
 
 - **Plot any function of x** — type an expression like `sin(x)`, `x^2 - 3`,
