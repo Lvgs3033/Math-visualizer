@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beautiful Math Visualizer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">∫</span>
+      <div>
+        <h1>Beautiful Math Visualizer</h1>
+        <p>Plot functions &middot; animate derivatives &amp; integrals &middot; explore Fourier transforms</p>
+      </div>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="graph">Graph</button>
+      <button class="tab-btn" data-tab="fourier">Fourier</button>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- ============ CONTROL PANEL ============ -->
+    <aside class="panel">
+
+      <div class="field">
+        <label for="functionInput">f(x) =</label>
+        <input id="functionInput" type="text" value="sin(x)" spellcheck="false" autocomplete="off">
+        <p id="parseStatus" class="hint">Ready</p>
+      </div>
+
+      <div class="presets">
+        <span class="presets-label">Try:</span>
+        <button class="chip" data-fn="sin(x)">sin(x)</button>
+        <button class="chip" data-fn="cos(x)*x">x&middot;cos(x)</button>
+        <button class="chip" data-fn="x^2 - 3">x&sup2;-3</button>
+        <button class="chip" data-fn="exp(-x^2)">e^(-x&sup2;)</button>
+        <button class="chip" data-fn="x^3 - 3*x">x&sup3;-3x</button>
+        <button class="chip" data-fn="1/(1+x^2)">1/(1+x&sup2;)</button>
+        <button class="chip" data-fn="sin(x)*cos(3*x)">sin(x)cos(3x)</button>
+        <button class="chip" data-fn="tan(x)">tan(x)</button>
+      </div>
+
+      <div class="field-row">
+        <div class="field small">
+          <label for="xMin">x min</label>
+          <input id="xMin" type="number" value="-10" step="1">
+        </div>
+        <div class="field small">
+          <label for="xMax">x max</label>
+          <input id="xMax" type="number" value="10" step="1">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="pointsRange">Resolution <span id="pointsVal">400</span> points</label>
+        <input id="pointsRange" type="range" min="50" max="1000" step="10" value="400">
+      </div>
+
+      <div class="field">
+        <label for="speedRange">Animation speed <span id="speedVal">1.0x</span></label>
+        <input id="speedRange" type="range" min="0.25" max="3" step="0.25" value="1">
+      </div>
+
+      <div class="btn-group">
+        <button id="plotBtn" class="btn btn-primary">Plot Function</button>
+      </div>
+
+      <div class="visibility">
+        <label class="check"><input type="checkbox" id="toggleFunction" checked><span>f(x)</span></label>
+        <label class="check"><input type="checkbox" id="toggleDerivative" checked><span>f&prime;(x)</span></label>
+        <label class="check"><input type="checkbox" id="toggleIntegral" checked><span>&int;f(x)dx</span></label>
+      </div>
+
+      <div class="btn-group column">
+        <button id="animDerivBtn" class="btn btn-accent1">▶ Animate Derivative</button>
+        <button id="animIntBtn" class="btn btn-accent2">▶ Animate Integral</button>
+        <button id="stopBtn" class="btn btn-ghost" disabled>■ Stop Animation</button>
+      </div>
+
+      <div class="expr-card">
+        <div class="expr-row"><span class="expr-tag f">f(x)</span><span id="exprOriginal">—</span></div>
+        <div class="expr-row"><span class="expr-tag d">f&prime;(x)</span><span id="exprDerivative">—</span></div>
+        <div class="expr-row"><span class="expr-tag i">&int;f</span><span id="exprIntegral">—</span></div>
+      </div>
+
+      <div id="errorBox" class="error-box hidden"></div>
+    </aside>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <main class="content">
+
+      <section id="graphView" class="view active">
+        <div id="mainPlot" class="plot"></div>
+        <div class="legend-strip">
+          <span><i class="dot f"></i> f(x)</span>
+          <span><i class="dot d"></i> f&prime;(x) derivative</span>
+          <span><i class="dot i"></i> &int;f(x)dx integral</span>
+          <span id="animStatus" class="anim-status"></span>
+        </div>
+      </section>
+
+      <section id="fourierView" class="view">
+        <div class="fourier-controls">
+          <p class="hint">Fourier transform decomposes f(x) into a sum of sine/cosine waves of different frequencies. The spectrum below shows the magnitude of each frequency component present in your function over the chosen interval.</p>
+          <button id="fourierBtn" class="btn btn-primary">Compute Fourier Transform</button>
+        </div>
+        <div id="signalPlot" class="plot plot-half"></div>
+        <div id="spectrumPlot" class="plot plot-half"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    Built with Flask &middot; NumPy &middot; SymPy &middot; Plotly.js
+  </footer>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
