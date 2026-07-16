@@ -1,0 +1,8 @@
+# Ignore frontend files
+*.html linguist-vendored
+*.css linguist-vendored
+*.js linguist-vendored
+
+# Ignore Flask folders
+static/** linguist-vendored
+templates/** linguist-vendored
